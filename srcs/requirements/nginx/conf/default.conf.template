@@ -1,9 +1,9 @@
 server {
     listen 443 ssl;
-    server_name kkhai-ki.42.fr;
+    server_name ${DOMAIN_NAME};
 
-    ssl_certificate /etc/nginx/certs/kkhai-ki.42.fr.crt;
-    ssl_certificate_key /etc/nginx/certs/kkhai-ki.42.fr.key;
+    ssl_certificate /etc/nginx/certs/${DOMAIN_NAME}.crt;
+    ssl_certificate_key /etc/nginx/certs/${DOMAIN_NAME}.key;
 
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;

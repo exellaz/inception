@@ -16,7 +16,7 @@ else
     echo "📄 Certificate already exists."
 fi
 
-envsubst '$DOMAIN_NAME' < /etc/nginx/sites-available/default.conf.template \
-    > /etc/nginx/sites-available/default
+envsubst '${DOMAIN_NAME}' < /etc/nginx/templates/default.conf.template \
+        > /etc/nginx/conf.d/default.conf
 
 exec "$@"
