@@ -16,6 +16,11 @@ if [ ! -f wp-config.php ]; then
     sed -i "s/username_here/$WORDPRESS_DB_USER/" wp-config.php
     sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/" wp-config.php
     sed -i "s/localhost/$WORDPRESS_DB_HOST/" wp-config.php
+    echo "define('WP_REDIS_HOST', 'redis');" >> wp-config.php
+    echo "define('WP_REDIS_PORT', 6379);" >> wp-config.php
+    echo "define('WP_REDIS_PATH', '/run/redis/redis.sock');" >> wp-config.php
+    echo "define('WP_REDIS_SCHEME', 'unix');" >> wp-config.php
+
 fi
 
 if ! wp core is-installed --allow-root; then
@@ -28,10 +33,12 @@ if ! wp core is-installed --allow-root; then
         --admin_email=$WORDPRESS_ADMIN_EMAIL \
         --skip-email \
         --allow-root
+    wp plugin install redis-cache --activate --allow-root
 else
     echo "WordPress already installed."
 fi
 
 mkdir -p /run/php
+wp redis enable --allow-root
 exec php-fpm7.4 -F
 

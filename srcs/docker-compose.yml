@@ -19,6 +19,7 @@ services:
       - .env
     depends_on:
       - mariadb
+      - redis
     volumes:
       - wordpress_data:/var/www/wordpress
     networks:
@@ -41,6 +42,18 @@ services:
       - inception_net
     restart: always
 
+  redis:
+    container_name: redis
+    image: redis
+    build: ./requirements/bonus/redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - inception_net
+    restart: always
+
 volumes:
   mariadb_data:
     driver: local
@@ -54,6 +67,12 @@ volumes:
       type: none
       o: bind
       device: /home/ducky/data/wordpress
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ducky/data/redis
 
 networks:
   inception_net:
