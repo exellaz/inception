@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 CERT_DIR="/etc/nginx/certs"
 DOMAIN="${DOMAIN_NAME:-localhost}"

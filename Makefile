@@ -30,4 +30,12 @@ stop:
 	sudo docker rm -f $(MARIADB_CONTAINER)
 	sudo docker rm -f $(WORDPRESS_CONTAINER)
 
+fclean:
+	sudo docker stop $$(sudo docker ps -qa) || true
+	sudo docker rm $$(sudo docker ps -qa) || true
+	sudo docker rmi -f $$(sudo docker images -qa) || true
+	sudo docker volume rm $$(sudo docker volume ls -q) || true
+	sudo docker network rm $$(sudo docker network ls -q) 2>/dev/null || true
+
+
 re: stop build run

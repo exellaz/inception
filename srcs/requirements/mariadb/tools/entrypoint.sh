@@ -21,11 +21,18 @@ until mysqladmin ping >/dev/null 2>&1; do
     sleep 1
 done
 
+# Ensure env vars exist
+echo "Creating DB/user..."
+: "${DB_NAME:?DB_NAME is required}"
+: "${DB_USER:?DB_USER is required}"
+: "${DB_PASSWORD:?DB_PASSWORD is required}"
+
+
 # Run DB setup
 echo "Setting up database and user..."
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
-mysql -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';"
+mysql -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;"
+mysql -e "CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PASSWORD}';"
+mysql -e "GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO \`${DB_USER}\`@'%';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # Kill temporary DB
