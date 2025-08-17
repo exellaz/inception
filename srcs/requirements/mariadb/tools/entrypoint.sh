@@ -1,42 +1,44 @@
 #!/bin/sh
 set -e
 
-# Create directory for MariaDB socket
+# Create socket dir
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 
-# Initialize DB if not already done
+# Initialize DB if needed
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Initializing database..."
     mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 fi
 
-# Start MariaDB with temporary config and wait for it to be ready
+# Start MariaDB (no networking) to run setup
 echo "Starting temporary MariaDB..."
 mysqld_safe --skip-networking &
 pid="$!"
 
-# Wait for MariaDB to be ready
-until mysqladmin ping >/dev/null 2>&1; do
+# Wait until it's ready
+until mysqladmin ping --silent; do
     sleep 1
 done
 
 # Ensure env vars exist
-echo "Creating DB/user..."
 : "${DB_NAME:?DB_NAME is required}"
 : "${DB_USER:?DB_USER is required}"
 : "${DB_PASSWORD:?DB_PASSWORD is required}"
+: "${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}"
 
-
-# Run DB setup
+# Set root password and create DB/user
 echo "Setting up database and user..."
-mysql -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;"
-mysql -e "CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PASSWORD}';"
-mysql -e "GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO \`${DB_USER}\`@'%';"
-mysql -e "FLUSH PRIVILEGES;"
+mysql -u root <<-EOSQL
+    ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
+    CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
+    CREATE USER IF NOT EXISTS \`${DB_USER}\`@'%' IDENTIFIED BY '${DB_PASSWORD}';
+    GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO \`${DB_USER}\`@'%';
+    FLUSH PRIVILEGES;
+EOSQL
 
-# Kill temporary DB
-mysqladmin shutdown
+# Shut down temporary DB
+mysqladmin -u root -p"${DB_ROOT_PASSWORD}" shutdown
 
 # Start MariaDB normally
 echo "✅ Database ready. Starting MariaDB..."

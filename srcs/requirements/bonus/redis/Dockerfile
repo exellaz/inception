@@ -8,4 +8,4 @@ RUN apt-get update && \
 
 EXPOSE 6379
 
-CMD ["redis-server", "--appendonly", "yes", "--dir" , "/data", "--protected-mode" , "no"]
+CMD ["redis-server", "--appendonly", "yes", "--dir" , "/data", "--protected-mode" , "no", "--bind", "0.0.0.0"]

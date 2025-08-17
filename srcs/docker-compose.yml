@@ -67,6 +67,15 @@ services:
       - inception_net
     restart: always
 
+  adminer:
+    container_name: adminer
+    build: ./requirements/bonus/adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - inception_net
+    restart: always
+
 volumes:
   mariadb_data:
     driver: local

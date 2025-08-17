@@ -16,26 +16,26 @@ WORDPRESS_SRC = srcs/requirements/wordpress
 NETWORK = inception_net
 
 build:
-	sudo docker build -t $(NGINX_NAME) $(NGINX_SRC)
-	sudo docker build -t $(MARIADB_NAME) $(MARIADB_SRC)
-	sudo docker build -t $(WORDPRESS_NAME) $(WORDPRESS_SRC)
+	docker build -t $(NGINX_NAME) $(NGINX_SRC)
+	docker build -t $(MARIADB_NAME) $(MARIADB_SRC)
+	docker build -t $(WORDPRESS_NAME) $(WORDPRESS_SRC)
 
 run:
-	sudo docker run -d --name $(WORDPRESS_CONTAINER) --env-file srcs/.env --network $(NETWORK) -v wordpress_data:/var/www/wordpress $(WORDPRESS_NAME)
-	sudo docker run -d --name $(MARIADB_CONTAINER) --env-file srcs/.env --network $(NETWORK) $(MARIADB_NAME)
-	sudo docker run -d --name $(NGINX_CONTAINER) -e DOMAIN_NAME=$(DOMAIN_NAME) -p $(PORT):443 -v wordpress_data:/var/www/html:ro --network $(NETWORK) $(NGINX_NAME)
+	docker run -d --name $(WORDPRESS_CONTAINER) --env-file srcs/.env --network $(NETWORK) -v wordpress_data:/var/www/wordpress $(WORDPRESS_NAME)
+	docker run -d --name $(MARIADB_CONTAINER) --env-file srcs/.env --network $(NETWORK) $(MARIADB_NAME)
+	docker run -d --name $(NGINX_CONTAINER) -e DOMAIN_NAME=$(DOMAIN_NAME) -p $(PORT):443 -v wordpress_data:/var/www/html:ro --network $(NETWORK) $(NGINX_NAME)
 
 stop:
-	sudo docker rm -f $(NGINX_CONTAINER)
-	sudo docker rm -f $(MARIADB_CONTAINER)
-	sudo docker rm -f $(WORDPRESS_CONTAINER)
+	docker rm -f $(NGINX_CONTAINER)
+	docker rm -f $(MARIADB_CONTAINER)
+	docker rm -f $(WORDPRESS_CONTAINER)
 
 fclean:
-	sudo docker stop $$(sudo docker ps -qa) || true
-	sudo docker rm $$(sudo docker ps -qa) || true
-	sudo docker rmi -f $$(sudo docker images -qa) || true
-	sudo docker volume rm $$(sudo docker volume ls -q) || true
-	sudo docker network rm $$(sudo docker network ls -q) 2>/dev/null || true
+	docker stop $$(docker ps -qa) || true
+	docker rm $$(docker ps -qa) || true
+	docker rmi -f $$(docker images -qa) || true
+	docker volume rm $$(docker volume ls -q) || true
+	docker network rm $$(docker network ls -q) 2>/dev/null || true
 
 
 re: stop build run

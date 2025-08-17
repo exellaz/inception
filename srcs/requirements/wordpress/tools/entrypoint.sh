@@ -16,10 +16,9 @@ if [ ! -f wp-config.php ]; then
     sed -i "s/username_here/$WORDPRESS_DB_USER/" wp-config.php
     sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/" wp-config.php
     sed -i "s/localhost/$WORDPRESS_DB_HOST/" wp-config.php
-    echo "define('WP_REDIS_HOST', 'redis');" >> wp-config.php
-    echo "define('WP_REDIS_PORT', 6379);" >> wp-config.php
-    echo "define('WP_REDIS_PATH', '/run/redis/redis.sock');" >> wp-config.php
-    echo "define('WP_REDIS_SCHEME', 'unix');" >> wp-config.php
+    sed -i "/Add any custom values between this line and the \"stop editing\" line./a \
+    define( 'WP_REDIS_HOST', 'redis' );\
+    define( 'WP_REDIS_PORT', 6379 );" /var/www/wordpress/wp-config.php
 
 fi
 
