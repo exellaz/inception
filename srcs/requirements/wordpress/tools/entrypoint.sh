@@ -16,10 +16,6 @@ if [ ! -f wp-config.php ]; then
     sed -i "s/username_here/$WORDPRESS_DB_USER/" wp-config.php
     sed -i "s/password_here/$WORDPRESS_DB_PASSWORD/" wp-config.php
     sed -i "s/localhost/$WORDPRESS_DB_HOST/" wp-config.php
-    sed -i "/Add any custom values between this line and the \"stop editing\" line./a \
-    define( 'WP_REDIS_HOST', 'redis' );\
-    define( 'WP_REDIS_PORT', 6379 );" /var/www/wordpress/wp-config.php
-
 fi
 
 if ! wp core is-installed --allow-root; then
@@ -35,6 +31,7 @@ if ! wp core is-installed --allow-root; then
     wp plugin install redis-cache --activate --allow-root
 else
     echo "WordPress already installed."
+    wp plugin activate redis-cache --allow-root
 fi
 
 mkdir -p /run/php
