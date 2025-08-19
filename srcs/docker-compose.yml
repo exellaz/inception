@@ -78,6 +78,18 @@ services:
       - inception_net
     restart: always
 
+  portainer:
+    container_name: portainer
+    build: ./requirements/bonus/portainer
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - inception_net
+    restart: always
+
 volumes:
   mariadb_data:
     driver: local
@@ -97,6 +109,12 @@ volumes:
       type: none
       o: bind
       device: /home/ducky/data/redis
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ducky/data/portainer
 
 networks:
   inception_net:
