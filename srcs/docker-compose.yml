@@ -3,6 +3,8 @@ services:
     container_name: mariadb
     image: mariadb
     build: ./requirements/mariadb
+    ports:
+      - "3306"
     env_file:
       - .env
     volumes:

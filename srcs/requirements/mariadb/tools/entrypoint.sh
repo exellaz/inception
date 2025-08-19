@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 # Create socket dir
 mkdir -p /run/mysqld
