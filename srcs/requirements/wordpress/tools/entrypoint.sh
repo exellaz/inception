@@ -36,6 +36,7 @@ if ! wp core is-installed --allow-root; then
     wp config set WP_REDIS_TIMEOUT 1 --allow-root
     wp config set WP_REDIS_READ_TIMEOUT 1 --allow-root
     wp config set WP_REDIS_DATABASE 0 --allow-root
+    wp config set WP_CACHE true --allow-root
     wp config set FS_METHOD "direct" --allow-root
 
 else
