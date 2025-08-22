@@ -22,3 +22,18 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 }
+
+server {
+    listen 443 ssl;
+    server_name static.${DOMAIN_NAME};
+
+    ssl_certificate /etc/nginx/certs/${DOMAIN_NAME}.crt;
+    ssl_certificate_key /etc/nginx/certs/${DOMAIN_NAME}.key;
+
+    root /var/www/static-site;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}

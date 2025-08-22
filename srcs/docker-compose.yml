@@ -36,6 +36,7 @@ services:
       - "443:443"
     volumes:
       - wordpress_data:/var/www/wordpress
+      - ./requirements/bonus/static-site:/var/www/static-site
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
     depends_on:
