@@ -110,25 +110,25 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/ducky/data/mariadb
+      device: ~/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ducky/data/wordpress
+      device: ~/data/wordpress
   redis_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ducky/data/redis
+      device: ~/data/redis
   portainer_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/ducky/data/portainer
+      device: ~/data/portainer
 
 networks:
   inception_net:
