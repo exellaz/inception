@@ -1,7 +1,7 @@
 services:
   mariadb:
     container_name: mariadb
-    image: mariadb
+    image: mariadb:42
     build: ./requirements/mariadb
     ports:
       - "3306"
@@ -15,7 +15,7 @@ services:
 
   wordpress:
     container_name: wordpress
-    image: wordpress
+    image: wordpress:42
     build: ./requirements/wordpress
     env_file:
       - .env
@@ -30,7 +30,7 @@ services:
 
   nginx:
     container_name: nginx
-    image: nginx
+    image: nginx:42
     build: ./requirements/nginx
     ports:
       - "443:443"
@@ -47,7 +47,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis
+    image: redis:42
     build: ./requirements/bonus/redis
     ports:
       - "6379:6379"
@@ -59,6 +59,7 @@ services:
 
   ftp:
     container_name: ftp
+    image: ftp:42
     build: ./requirements/bonus/ftp
     env_file: .env
     ports:
@@ -72,6 +73,7 @@ services:
 
   adminer:
     container_name: adminer
+    image: adminer:42
     build: ./requirements/bonus/adminer
     ports:
       - "8080:8080"
@@ -81,6 +83,7 @@ services:
 
   portainer:
     container_name: portainer
+    image: portainer:42
     build: ./requirements/bonus/portainer
     ports:
       - "9443:9443"
