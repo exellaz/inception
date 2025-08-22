@@ -28,7 +28,15 @@ if ! wp core is-installed --allow-root; then
         --admin_email=$WORDPRESS_ADMIN_EMAIL \
         --skip-email \
         --allow-root
+    chown -R www-data:www-data /var/www/wordpress/wp-content || true
+    chmod -R 755 /var/www/wordpress/wp-content || true
     wp plugin install redis-cache --activate --allow-root
+    wp config set WP_REDIS_HOST "redis" --allow-root
+    wp config set WP_REDIS_PORT 6379  --allow-root
+    wp config set WP_REDIS_TIMEOUT 1 --allow-root
+    wp config set WP_REDIS_READ_TIMEOUT 1 --allow-root
+    wp config set WP_REDIS_DATABASE 0 --allow-root
+
 else
     echo "WordPress already installed."
     wp plugin activate redis-cache --allow-root
