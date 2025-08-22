@@ -94,6 +94,16 @@ services:
       - inception_net
     restart: always
 
+  static-site:
+    container_name: static-site
+    image: static-site:42
+    build: ./requirements/bonus/static-site
+    expose:
+      - "8000"
+    networks:
+      - inception_net
+    restart: always
+
 volumes:
   mariadb_data:
     driver: local

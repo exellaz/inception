@@ -26,8 +26,6 @@ RUN curl -fsSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-
 RUN mkdir -p /var/www/wordpress && \
     curl -fsSL https://wordpress.org/wordpress-6.8.2.tar.gz | tar -xz --strip-components=1 -C /var/www/wordpress
 
-# COPY ./conf/wp-config.php /var/www/wordpress/wp-config.php
-
 COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
